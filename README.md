@@ -18,6 +18,7 @@ focus on business logics.
 	- Use @Transient for getter methods that do not relate to field mapping
 
 ============================================================================================
+
 					Spring Security
 - Use password encoder (BCryptPasswordEncoder) to encode user's password.
 - BCrypt is a secured, strong and adaptive cryptography algorithm.
