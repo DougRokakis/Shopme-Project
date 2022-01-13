@@ -17,7 +17,7 @@ focus on business logics.
 	- Code entity classes first -> create tables (foward engineering)
 	- Use @Transient for getter methods that do not relate to field mapping
 
-============================================================================================
+============================================================================
 
 					Spring Security
 - Use password encoder (BCryptPasswordEncoder) to encode user's password.
