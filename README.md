@@ -17,19 +17,19 @@ focus on business logics.
 	- Code entity classes first -> create tables (foward engineering)
 	- Use @Transient for getter methods that do not relate to field mapping
 
-=================================================================================================================
+============================================================================================
 					Spring Security
 - Use password encoder (BCryptPasswordEncoder) to encode user's password.
 - BCrypt is a secured, strong and adaptive cryptography algorithm.
 
-=================================================================================================================
+============================================================================================
 
 					RESTful Webservices
 - Implement a simple RESTful webservice using @RestController (UserRestController).
 - When used internally (no public APIs): no need to follow best practices (e.g. a REST method returns 
 a String - not JSON).
 
-=================================================================================================================
+============================================================================================
 
 					Bootstrap, CSS and HTML
 - Bootstrap provides great templates for UI components: navigation, menu item, modal dialog, table, form fields, 
@@ -40,7 +40,7 @@ buttons, pagination...
 - CSS media queries to target different screen sizes.
 - HTML 5 defines standard attributes for form fields validation -> Almost no need to use Javascript
 
-=================================================================================================================
+============================================================================================
 
 					Thymeleaf
 - Thymeleaf is a great template engine - far better than JSP and JSTL.
@@ -50,7 +50,7 @@ buttons, pagination...
 - th:each -> iterate a collection
 - th: propertyName -> generate value for an HTML attribute (th:src, th:href, th:class, th:action...)
 
-=================================================================================================================
+============================================================================================
 
 					Javascript & jQuery
 - Use jQuery's .post() method to consume a RESTful webservice (AJAX call)
@@ -63,14 +63,14 @@ buttons, pagination...
 -Handle event of an input:
 	- input.on("event-name", function(e){})
   
-  =================================================================================================================
+  ============================================================================================
   
 					Other API's
 - Generate CSV file user SuperCSV library
 - Generate Excel document using Apache POI library
 - Generate PDF document using OpenPDF library
 
-=================================================================================================================
+============================================================================================
 
 					Coding Techniques
 - Respect n-tier architecture:
@@ -82,7 +82,7 @@ buttons, pagination...
 - Refactor code whenever possible, avoid code duplication
 - Short methods with meaningful name is preferred to long-line methods
 
-=================================================================================================================
+============================================================================================
 
 MODIFICATIONS TO BE MADE:
 
