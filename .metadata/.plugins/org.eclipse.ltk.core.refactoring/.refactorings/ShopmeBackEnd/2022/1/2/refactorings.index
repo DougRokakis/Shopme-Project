@@ -1,0 +1,3 @@
+1641176033004	Extract method 'getRedirectURLtoAffectedUser'
+1641245444179	Rename type 'UserCSVExporter'
+1641258251823	Rename type 'UserPDFExporter'

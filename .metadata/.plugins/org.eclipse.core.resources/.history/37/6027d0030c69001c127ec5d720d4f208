@@ -1,0 +1,6 @@
+package com.shopme.admin.user;
+
+@DataJpaTest
+public class RoleRepositoryTests {
+
+}
