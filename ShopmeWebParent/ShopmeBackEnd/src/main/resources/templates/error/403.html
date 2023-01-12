@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- XML NAMESPACE DECLARATION FOR THYMELEAF -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Error - Shopme Admin', 'none')" />
+<body>
+<!-- DIV FOR CONTAINER -->
+<div class="container-fluid">
+	<!-- DIV FOR NAV BAR -->
+	<div th:replace="navigation :: menu"></div>
+	<div class="m-3">
+		<h2>Sorry, you don't have permission to access page.</h2>
+	</div>
+	<!-- DIV FOR FOOTER -->
+	<div th:replace="fragments :: footer"></div>
+</div>
+</body>
+</html>
