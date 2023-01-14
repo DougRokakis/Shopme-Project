@@ -11,7 +11,7 @@
 	<div>
 		<h2>Manage Products | [[${pageTitle}]]</h2>	
 	</div>
-
+			
 	<form th:action="@{/products/save}" method="post" onsubmit="return checkUnique(this)"
 		enctype="multipart/form-data"
 		th:object="${product}">
@@ -34,28 +34,49 @@
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link" data-toggle="tab" href="#shipping" role="tab">Shipping</a>
-		  </li>		
+		  </li>		  
 		</ul>
-
+		
 		<div class="tab-content">
 		  <div class="tab-pane active p-3" id="overview" role="tabpanel">
 		  	<div th:replace="products/product_overview :: content"></div>
 		  </div>
 		  <div class="tab-pane" id="description" role="tabpanel">
+		    <th:block sec:authorize="hasAuthority('Salesperson')">
+		  	<div th:replace="products/product_description_read_only :: content"></div>
+		  	</th:block>
+
+		  	<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
 		  	<div th:replace="products/product_description :: content"></div>
 		  </div>
 		  <div class="tab-pane" id="images" role="tabpanel">
+		  	<th:block sec:authorize="hasAuthority('Salesperson')">
+		  	<div th:replace="products/product_images_read_only :: content"></div>
+		  	</th:block>		  
+
+		  	<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
 		  	<div th:replace="products/product_images :: content"></div>
+		  	</th:block>
 		  </div>
-		  	<div class="tab-pane p-3" id="details" role="tabpanel">
-		  <div th:replace="products/product_details :: content"></div>
-		  <div>
-		  	<input type="button" class="btn btn-secondary" value="Add More Detail"
+		  <div class="tab-pane p-3" id="details" role="tabpanel">
+		    <th:block sec:authorize="hasAuthority('Salesperson')">
+		  	<div th:replace="products/product_details_read_only :: content"></div>
+		  	</th:block>
+		  	<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+		  	<div th:replace="products/product_details :: content"></div>
+		  	<div>
+		  		<input type="button" class="btn btn-secondary" value="Add More Detail"
 		  			onclick="addNextDetailSection()" />
-		  </div>	
+		  	</div>
+		  	</th:block>
 		  </div>
 		  <div class="tab-pane p-3" id="shipping" role="tabpanel">
+		  	<th:block sec:authorize="hasAuthority('Salesperson')">
+		  	<div th:replace="products/product_shipping_read_only :: content"></div>
+		  	</th:block>		  
+		  	<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
 		  	<div th:replace="products/product_shipping :: content"></div>
+		  	</th:block>
 		  </div>
 		</div>	
 	</div>
@@ -64,11 +85,11 @@
 		<input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" />
 	</div>
 	</form>
-
+	
 	<div th:replace="modal_fragments :: modal_dialog"></div>
-
+	
 	<div th:replace="fragments :: footer"></div>
-
+	
 </div>
 <script type="text/javascript">
 	MAX_FILE_SIZE = 502400; // 500KB
@@ -78,7 +99,7 @@
 	defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
 	checkUniqueUrl = "[[@{/products/check_unique}]]";
 	
-	</script>
+</script>
 <script th:src="@{/js/common_form.js}"></script>
 <script th:src="@{/js/product_form_overview.js}"></script>
 <script th:src="@{/js/product_form_images.js}"></script>
