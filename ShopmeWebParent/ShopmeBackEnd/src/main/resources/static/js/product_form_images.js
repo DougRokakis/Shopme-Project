@@ -1,4 +1,5 @@
 var extraImagesCount = 0;
+
 $(document).ready(function() {	
 	$("input[name='extraImage']").each(function(index) {
 		extraImagesCount++;
@@ -10,25 +11,26 @@ $(document).ready(function() {
 			showExtraImageThumbnail(this, index);
 		});
 	});
-
+	
 	$("a[name='linkRemoveExtraImage']").each(function(index) {
 		$(this).click(function() {
 			removeExtraImage(index);
 		});
 	});
-
+	
 });
 
 function showExtraImageThumbnail(fileInput, index) {
 	var file = fileInput.files[0];
 	
 	fileName = file.name;
-
+	
 	imageNameHiddenField = $("#imageName" + index);
 	if (imageNameHiddenField.length) {
 		imageNameHiddenField.val(fileName);
 	}
-
+		
+	
 	var reader = new FileReader();
 	reader.onload = function(e) {
 		$("#extraThumbnail" + index).attr("src", e.target.result);
@@ -40,6 +42,7 @@ function showExtraImageThumbnail(fileInput, index) {
 		addNextExtraImageSection(index + 1);		
 	}
 }
+
 function addNextExtraImageSection(index) {
 	htmlExtraImage = `
 		<div class="col border m-3 p-2" id="divExtraImage${index}">
@@ -68,6 +71,7 @@ function addNextExtraImageSection(index) {
 	
 	extraImagesCount++;
 }
+
 function removeExtraImage(index) {
 	$("#divExtraImage" + index).remove();
 }

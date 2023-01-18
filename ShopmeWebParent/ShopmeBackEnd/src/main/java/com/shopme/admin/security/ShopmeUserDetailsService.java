@@ -19,6 +19,7 @@ public class ShopmeUserDetailsService implements UserDetailsService {
 		if (user != null) {
 			return new ShopmeUserDetails(user);
 		}
+		
 		throw new UsernameNotFoundException("Could not find user with email: " + email);
 	}
 

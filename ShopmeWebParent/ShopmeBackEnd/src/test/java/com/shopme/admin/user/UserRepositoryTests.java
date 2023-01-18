@@ -19,17 +19,15 @@ import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
 @DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace=Replace.NONE)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class UserRepositoryTests {
-	
 	@Autowired
 	private UserRepository repo;
 	
 	@Autowired
 	private TestEntityManager entityManager;
 	
-	//TESTS PLACING NEW USER OBJECT INTO DATABASE WITH ONE ROLE
 	@Test
 	public void testCreateNewUserWithOneRole() {
 		Role roleAdmin = entityManager.find(Role.class, 1);
@@ -37,10 +35,10 @@ public class UserRepositoryTests {
 		userNamHM.addRole(roleAdmin);
 		
 		User savedUser = repo.save(userNamHM);
+		
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
-
-	//TESTS PLACING NEW USER OBJECT INTO DATABASE WITH TWO ROLES
+	
 	@Test
 	public void testCreateNewUserWithTwoRoles() {
 		User userRavi = new User("ravi@gmail.com", "ravi2020", "Ravi", "Kumar");
@@ -55,14 +53,12 @@ public class UserRepositoryTests {
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
 	
-	//TEST METHOD FOR RETRIEVING ALL USERS FROM DATABASE
 	@Test
 	public void testListAllUsers() {
 		Iterable<User> listUsers = repo.findAll();
 		listUsers.forEach(user -> System.out.println(user));
 	}
 	
-	//TEST METHOD FOR RETRIEVING USER BY ID
 	@Test
 	public void testGetUserById() {
 		User userNam = repo.findById(1).get();
@@ -70,7 +66,6 @@ public class UserRepositoryTests {
 		assertThat(userNam).isNotNull();
 	}
 	
-	//TEST METHOD FOR UPDATING USER DETAILS
 	@Test
 	public void testUpdateUserDetails() {
 		User userNam = repo.findById(1).get();
@@ -80,26 +75,25 @@ public class UserRepositoryTests {
 		repo.save(userNam);
 	}
 	
-	//TEST METHOD FOR UPDATING USER ROLES
 	@Test
 	public void testUpdateUserRoles() {
 		User userRavi = repo.findById(2).get();
 		Role roleEditor = new Role(3);
 		Role roleSalesperson = new Role(2);
+		
 		userRavi.getRoles().remove(roleEditor);
 		userRavi.addRole(roleSalesperson);
 		
 		repo.save(userRavi);
 	}
 	
-	//TEST METHOD FOR DELETING USER
 	@Test
 	public void testDeleteUser() {
 		Integer userId = 2;
 		repo.deleteById(userId);
-		}
-
-	//TEST METHOD FOR CHECKING IF EMAIL IS CURRENTLY BEING USED
+		
+	}
+	
 	@Test
 	public void testGetUserByEmail() {
 		String email = "ravi@gmail.com";
@@ -107,30 +101,29 @@ public class UserRepositoryTests {
 		
 		assertThat(user).isNotNull();
 	}
-	//TEST METHOD FOR CHECKING IF ID OF USER EXISTS
+	
 	@Test
 	public void testCountById() {
 		Integer id = 1;
-		Long countById=repo.countById(id);
+		Long countById = repo.countById(id);
 		
 		assertThat(countById).isNotNull().isGreaterThan(0);
 	}
 	
-	//TEST METHOD FOR ALTERING USER ENABLED STATUS TO FALSE(DISABLED)
 	@Test
 	public void testDisableUser() {
-		Integer id = 6;
+		Integer id = 1;
 		repo.updateEnabledStatus(id, false);
+		
 	}
 	
-	//TEST METHOD FOR ALTERING USER ENABLED STATUS TO TRUE(ENABLED)
 	@Test
 	public void testEnableUser() {
-		Integer id = 6;
+		Integer id = 3;
 		repo.updateEnabledStatus(id, true);
-	}
+		
+	}	
 	
-	//TEST METHOD FOR PAGINATION, LISTING FIRST PAGE SPECIFICALLY
 	@Test
 	public void testListFirstPage() {
 		int pageNumber = 0;
@@ -146,10 +139,10 @@ public class UserRepositoryTests {
 		assertThat(listUsers.size()).isEqualTo(pageSize);
 	}
 	
-	//TEST METHOD FOR SEARCHING FOR USERS
+	@Test
 	public void testSearchUsers() {
 		String keyword = "bruce";
-
+	
 		int pageNumber = 0;
 		int pageSize = 4;
 		
@@ -158,7 +151,7 @@ public class UserRepositoryTests {
 		
 		List<User> listUsers = page.getContent();
 		
-		listUsers.forEach(user -> System.out.println(user));
+		listUsers.forEach(user -> System.out.println(user));	
 		
 		assertThat(listUsers.size()).isGreaterThan(0);
 	}

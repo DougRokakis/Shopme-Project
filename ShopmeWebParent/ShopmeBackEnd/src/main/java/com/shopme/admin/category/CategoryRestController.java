@@ -10,7 +10,7 @@ public class CategoryRestController {
 
 	@Autowired
 	private CategoryService service;
-
+	
 	@PostMapping("/categories/check_unique")
 	public String checkUnique(@Param("id") Integer id, @Param("name") String name,
 			@Param("alias") String alias) {

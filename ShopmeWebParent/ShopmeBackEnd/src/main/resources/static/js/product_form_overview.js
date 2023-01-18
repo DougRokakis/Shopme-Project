@@ -1,5 +1,6 @@
 dropdownBrands = $("#brand");
 dropdownCategories = $("#category");
+
 $(document).ready(function() {
 	
 	$("#shortDescription").richText();
@@ -9,7 +10,7 @@ $(document).ready(function() {
 		dropdownCategories.empty();
 		getCategories();
 	});	
-
+	
 	getCategoriesForNewForm();
 
 });
@@ -17,11 +18,11 @@ $(document).ready(function() {
 function getCategoriesForNewForm() {
 	catIdField = $("#categoryId");
 	editMode = false;
-
+	
 	if (catIdField.length) {
 		editMode = true;
 	}
-
+	
 	if (!editMode) getCategories();
 }
 
@@ -35,6 +36,7 @@ function getCategories() {
 		});			
 	});
 }
+
 function checkUnique(form) {
 	productId = $("#id").val();
 	productName = $("#name").val();
@@ -57,4 +59,4 @@ function checkUnique(form) {
 	});
 	
 	return false;
-}	
+}

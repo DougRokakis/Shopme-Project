@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-	
+
 	@GetMapping("")
 	public String viewHomePage() {
 		return "index";
@@ -20,7 +20,7 @@ public class MainController {
 		if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
 			return "login";
 		}
-
+		
 		return "redirect:/";
 	}
 }

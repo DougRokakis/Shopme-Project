@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class PasswordEncoderTest {
-	
-	//TEST TO ENCRYPT PASSWORD WITH BCRYPTPASSWORDENCODER AND CHECK TO ENSURE THAT ENCODED PASSWORD MATCHES RAW PASSWORD
 	@Test
 	public void testEncodePassword() {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -20,5 +18,4 @@ public class PasswordEncoderTest {
 		
 		assertThat(matches).isTrue();
 	}
-
 }

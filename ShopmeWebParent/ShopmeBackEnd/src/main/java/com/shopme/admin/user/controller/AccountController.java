@@ -32,6 +32,7 @@ public class AccountController {
 		model.addAttribute("user", user);
 		
 		return "users/account_form";
+		
 	}
 	
 	@PostMapping("/account/update")
@@ -39,26 +40,26 @@ public class AccountController {
 			@AuthenticationPrincipal ShopmeUserDetails loggedUser,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
 		
-		if(!multipartFile.isEmpty()) {
+		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
 			User savedUser = service.updateAccount(user);
 			
-			String uploadDir = "user-photos/" + savedUser.getId(); 
+			String uploadDir = "user-photos/" + savedUser.getId();
 			
 			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		}else {
-			if(user.getPhotos().isEmpty()) user.setPhotos(null);
+			
+		} else {
+			if (user.getPhotos().isEmpty()) user.setPhotos(null);
 			service.updateAccount(user);
 		}
 		
 		loggedUser.setFirstName(user.getFirstName());
 		loggedUser.setLastName(user.getLastName());
 		
-		//SUCCESSFUL CREATION OF NEW USER MESSAGE
 		redirectAttributes.addFlashAttribute("message", "Your account details have been updated.");
 		
 		return "redirect:/account";
-	}
+	}	
 }

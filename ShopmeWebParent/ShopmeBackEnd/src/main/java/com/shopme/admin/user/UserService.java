@@ -6,20 +6,17 @@ import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
 @Service
 @Transactional
 public class UserService {
-	//ESTABLISHES THAT THERE WILL BE 4 USERS PRESENTED ON WEBPAGE FOR PAGINATION
 	public static final int USERS_PER_PAGE = 4;
 	
 	@Autowired
@@ -35,58 +32,46 @@ public class UserService {
 		return userRepo.getUserByEmail(email);
 	}
 	
-	//RETURN LIST OF USERS SORTED BY FIRST NAME IN ASCENDING ORDER
 	public List<User> listAll() {
 		return (List<User>) userRepo.findAll(Sort.by("firstName").ascending());
 	}
 	
-	//METHOD RETURNS PAGE OF USER OBJECTS BY PAGE NUMBER AND ALSO ALLOWS FOR SORTING IN ASCENDING/DESCENDING ORDER
-	public Page<User> listByPage(int pageNum, String sortField, String sortDir, String keyword){
-		Sort sort = Sort.by(sortField);
-		
-		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-		
-		Pageable pageable = PageRequest.of(pageNum-1, USERS_PER_PAGE, sort);
-		
-		//CALLS findAll METHOD AS LONG AS KEYWORD IS NOT NULL
-		if(keyword !=null) {
-			return userRepo.findAll(keyword, pageable);
-		}
-		
-		return userRepo.findAll(pageable);
-	}
-	//RETURN LIST OF ROLES
-	public List<Role> listRoles(){
-		return (List<Role>) roleRepo.findAll();
+	public void listByPage(int pageNum, PagingAndSortingHelper helper) {
+		helper.listEntities(pageNum, USERS_PER_PAGE, userRepo);
 	}
 	
-	//METHOD TO SAVE USER INFORMATION WHETHER CREATING NEW OR UPDATING
+	public List<Role> listRoles() {
+		return (List<Role>) roleRepo.findAll();
+	}
+
 	public User save(User user) {
-		boolean isUpdatingUser = (user.getId()!=null);
+		boolean isUpdatingUser = (user.getId() != null);
 		
-		if(isUpdatingUser) {
+		if (isUpdatingUser) {
 			User existingUser = userRepo.findById(user.getId()).get();
 			
-			if(user.getPassword().isEmpty()) {
+			if (user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
-			}else {
+			} else {
 				encodePassword(user);
 			}
-		}else {
-			encodePassword(user);			
+			
+		} else {		
+			encodePassword(user);
 		}
+		
 		return userRepo.save(user);
 	}
 	
 	public User updateAccount(User userInForm) {
 		User userInDB = userRepo.findById(userInForm.getId()).get();
 		
-		if(!userInForm.getPassword().isEmpty()) {
+		if (!userInForm.getPassword().isEmpty()) {
 			userInDB.setPassword(userInForm.getPassword());
 			encodePassword(userInDB);
 		}
 		
-		if(userInForm.getPhotos() != null) {
+		if (userInForm.getPhotos() != null) {
 			userInDB.setPhotos(userInForm.getPhotos());
 		}
 		
@@ -96,52 +81,47 @@ public class UserService {
 		return userRepo.save(userInDB);
 	}
 	
-	//ENCODES PASSWORD
 	private void encodePassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
 	}
 	
-	//METHOD CHECKING TO SEE IF EMAIL BEING CREATED IS UNIQUE
 	public boolean isEmailUnique(Integer id, String email) {
 		User userByEmail = userRepo.getUserByEmail(email);
 		
-		if(userByEmail == null) return true;
+		if (userByEmail == null) return true;
 		
-		boolean isCreatingNew = (id==null);
+		boolean isCreatingNew = (id == null);
 		
-		if(isCreatingNew) {
-			if(userByEmail != null) return false;
-		}else {
-			if(userByEmail.getId() !=id) {
+		if (isCreatingNew) {
+			if (userByEmail != null) return false;
+		} else {
+			if (userByEmail.getId() != id) {
 				return false;
 			}
 		}
 		
 		return true;
 	}
-	
-	//METHOD TO GET INFORMATION OF USER BY SPECIFIC ID WITH EXCEPTION THROWN IF ID DOES NOT EXIST
+
 	public User get(Integer id) throws UserNotFoundException {
 		try {
-		return userRepo.findById(id).get();
-	}catch(NoSuchElementException ex) {
-		throw new UserNotFoundException("Could not find any user with ID " +id);
+			return userRepo.findById(id).get();
+		} catch (NoSuchElementException ex) {
+			throw new UserNotFoundException("Could not find any user with ID " + id);
 		}
 	}
 	
-	//METHOD TO DELETE USER BY ID WITH EXCEPTION THROWN IF ID DOES NOT EXIST
 	public void delete(Integer id) throws UserNotFoundException {
 		Long countById = userRepo.countById(id);
-		if(countById == null || countById == 0) {
-			throw new UserNotFoundException("Could not find any user with ID " +id);
+		if (countById == null || countById == 0) {
+			throw new UserNotFoundException("Could not find any user with ID " + id);
 		}
 		
 		userRepo.deleteById(id);
 	}
 	
-	//METHOD TO UPDATE USER ENABLED STATUS
 	public void updateUserEnabledStatus(Integer id, boolean enabled) {
-		userRepo.updateEnabledStatus(id,  enabled);
+		userRepo.updateEnabledStatus(id, enabled);
 	}
 }
